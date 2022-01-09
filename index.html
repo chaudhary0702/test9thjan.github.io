@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport"
+        content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Selection Sort Visualizer</title>
+        <style>
+            .mySlides {
+                display: none;
+            }
+            body {
+                background: #6f9e48 ;
+                font-family: Verdana, sans-serif;
+            }
+            h1{
+                margin-top: 70px;
+                margin-right: 20vw;
+                margin-left: 20vw;
+                text-align: center;
+                font-size: 40px;
+                color: white;
+                height: 50px;
+            }
+            .data-container {
+                width: 600px;
+                height: 384px;
+                position: relative;
+                margin: 0 auto;
+            }
+            .bar {
+                width: 28px;
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                background-color: #7a743a;
+                transition: 0.2s all ease;
+            }
+            .bar__id {
+                position: absolute;
+                top: -24px;
+                width: 100%;
+                text-align: center;
+            }
+            
+            .btn1 {
+                padding: 20px;
+                font-weight: bolder;
+                background-color: #7a743a;
+                border-radius: 10px;
+                color: white;
+                font-size: 16px;
+                border: white;
+                margin-left: 45vw;
+                margin-top: 4vw;
+                margin-right: 1vw;
+            }
+        </style>
+    </head>
+    <body >
+        <h1>Selection Sort Visualizer</h2>
+        <section class="data-container"></section>
+        <button class="btn1"onclick="SelectionSort(),disable()" id="Button1" >Selection Sort </button>
+        <script>
+            const container = document.querySelector(".data-container");
+            function generatebars(num = 20) {
+                for (let i = 0; i < num; i += 1) {
+                    const value = Math.floor(Math.random() * 100) + 1;
+                    const bar = document.createElement("div");
+                    bar.classList.add("bar");
+                    bar.style.height = `${value * 3}px`;
+                    bar.style.transform = `translateX(${i * 30}px)`;
+                    const barLabel = document.createElement("label");
+                    barLabel.classList.add("bar_id");
+                    barLabel.innerHTML = value;
+                    bar.appendChild(barLabel);
+                    container.appendChild(bar);
+                }
+            }
+            async function SelectionSort(delay = 200) {
+                let bars = document.querySelectorAll(".bar");
+                var min_idx = 0;
+                for (var i = 0; i < bars.length; i += 1) {
+                    min_idx = i;
+                    bars[i].style.backgroundColor = "#804620";
+                    for (var j = i + 1; j < bars.length; j += 1) {
+                        bars[j].style.backgroundColor = "#9c5833";
+                        await new Promise((resolve) =>
+                            setTimeout(() => {
+                            resolve();
+                            }, 200)
+                        );
+                        var val1 = parseInt(bars[j].childNodes[0].innerHTML);
+                        var val2 = parseInt(bars[min_idx].childNodes[0].innerHTML);
+                        if (val1 < val2) {
+                            if (min_idx !== i) {
+                                bars[min_idx].style.backgroundColor = " #7a743a";
+                            }
+                            min_idx = j;
+                        } 
+                        else {
+                            bars[j].style.backgroundColor = " #7a743a";
+                        }
+                    }
+                    var temp1 = bars[min_idx].style.height;
+                    var temp2 = bars[min_idx].childNodes[0].innerText;
+                    bars[min_idx].style.height = bars[i].style.height;
+                    bars[i].style.height = temp1;
+                    bars[min_idx].childNodes[0].innerText = bars[i].childNodes[0].innerText;
+                    bars[i].childNodes[0].innerText = temp2;
+                    await new Promise((resolve) =>
+                    setTimeout(() => {
+                        resolve();
+                    }, 200)
+                    );
+                    bars[min_idx].style.backgroundColor = " #7a743a";
+                    bars[i].style.backgroundColor = " #7a743a";
+                }
+               
+            }
+            generatebars();
+            function generate(){
+                window.location.reload();
+            }
+        </script>
+    </body>
+</html>
